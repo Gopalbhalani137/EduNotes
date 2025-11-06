@@ -1,15 +1,13 @@
 // src/middleware/authMiddleware.js
-const { verifyToken } = require("../services/jwt");
-const User = require("../models/userModel");
+import { verifyToken } from "../services/jwt.mjs";
+import User from "../models/userModel.mjs";
 
 /**
  * Protect routes - Verify JWT token
  */
-const protect = async (req, res, next) => {
+export const protect = async (req, res, next) => {
   try {
     let token;
-
-    // Check for token in Authorization header
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -50,7 +48,7 @@ const protect = async (req, res, next) => {
 /**
  * Admin only middleware
  */
-const admin = (req, res, next) => {
+export const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();
   } else {
@@ -60,5 +58,3 @@ const admin = (req, res, next) => {
     });
   }
 };
-
-module.exports = { protect, admin };

@@ -1,6 +1,5 @@
 // src/models/videoModel.js
-const mongoose = require('mongoose');
-
+import mongoose from 'mongoose';
 const videoSchema = new mongoose.Schema({
     videoId: {
         type: String,
@@ -45,4 +44,5 @@ const videoSchema = new mongoose.Schema({
 // Index for faster queries
 videoSchema.index({ videoId: 1, uploadedBy: 1 });
 
-module.exports = mongoose.model('Video', videoSchema);
+// module.exports = mongoose.model('Video', videoSchema);
+export default mongoose.model('Video', videoSchema);

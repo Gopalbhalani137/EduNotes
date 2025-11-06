@@ -1,16 +1,15 @@
-// src/app.js
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
 
 // Import routes
-const authRoutes = require("./routes/authRoutes");
-const transcriptRoutes = require("./routes/transcriptRoutes");
-const noteRoutes = require("./routes/noteRoutes");
+import authRoutes from "./routes/authRoutes.mjs";
+import transcriptRoutes from "./routes/transcriptRoutes.mjs";
+import noteRoutes from "./routes/noteRoutes.mjs";
 
 // Import middleware
-const errorHandler = require("./middleware/errorHandler");
+import errorHandler from "./middleware/errorHandler.mjs";
 
 const app = express();
 
@@ -57,4 +56,4 @@ app.use((req, res) => {
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

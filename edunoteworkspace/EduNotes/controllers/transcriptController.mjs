@@ -1,13 +1,13 @@
-// src/controllers/transcriptController.js
-const transcriptService = require('../services/transcriptService');
-const Video = require('../models/videoModel');
+// filepath: d:\programmes1\web devlopment\EduNotes\controllers\transcriptController.mjs
+import transcriptService from '../services/transcriptService.mjs';
+import Video from '../models/videoModel.js';
 
 /**
  * @desc    Fetch transcript from YouTube video
  * @route   POST /api/transcript/fetch
  * @access  Private
  */
-const getTranscript = async (req, res, next) => {
+export const getTranscript = async (req, res, next) => {
   try {
     const { videoUrl, title } = req.body;
 
@@ -19,11 +19,9 @@ const getTranscript = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Invalid YouTube URL' });
     }
 
-    // Optional: extract videoId early and log it
     const videoId = transcriptService.extractVideoId(videoUrl);
     console.log('Fetching transcript for videoId:', videoId);
 
-    // Fetch transcript (catch expected "no transcript" scenario)
     let videoData;
     try {
       videoData = await transcriptService.fetchTranscript(videoUrl);
@@ -31,7 +29,6 @@ const getTranscript = async (req, res, next) => {
     } catch (err) {
       console.error('fetchTranscript error:', err && err.message ? err.message : err);
 
-      // If the service intentionally throws "No transcript available", return 404 with a helpful message
       if (err && /no transcript/i.test(err.message || '')) {
         return res.status(404).json({
           success: false,
@@ -39,7 +36,6 @@ const getTranscript = async (req, res, next) => {
         });
       }
 
-      // otherwise propagate to central error handler
       throw err;
     }
 
@@ -51,7 +47,6 @@ const getTranscript = async (req, res, next) => {
       });
     }
 
-    // Check if video already exists
     let video = await Video.findOne({ videoId: videoData.videoId });
 
     if (!video) {
@@ -86,7 +81,7 @@ const getTranscript = async (req, res, next) => {
  * @route   GET /api/transcript/:videoId
  * @access  Private
  */
-const getVideoById = async (req, res, next) => {
+export const getVideoById = async (req, res, next) => {
   try {
     const video = await Video.findById(req.params.videoId);
 
@@ -104,9 +99,4 @@ const getVideoById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-module.exports = {
-  getTranscript,
-  getVideoById
 };

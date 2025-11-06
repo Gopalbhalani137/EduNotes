@@ -1,6 +1,6 @@
 // src/routes/noteRoutes.js
-const express = require("express");
-const {
+import express from "express";
+import {
   generateNotes,
   saveNote,
   getUserNotes,
@@ -8,14 +8,14 @@ const {
   updateNote,
   deleteNote,
   addHighlight,
-} = require("../controllers/notesController");
-const { protect } = require("../middleware/authMiddleware");
-const {
+} from "../controllers/notesController.mjs";
+import { protect } from "../middleware/authMiddleware.mjs";
+import Note from "../models/noteModel.mjs";
+import {
   generatePDF,
   generateTXT,
   generateMarkdown,
-} = require("../services/pdfGenerator");
-const Note = require("../models/noteModel");
+} from "../services/pdfGenerator.mjs";
 
 const router = express.Router();
 
@@ -110,4 +110,4 @@ router.get("/:id/export/:format", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,15 +1,15 @@
 // src/routes/transcriptRoutes.js
-const express = require("express");
-const {
+
+import express from 'express';
+import {
   getTranscript,
   getVideoById,
-} = require("../controllers/transcriptController");
-const { protect } = require("../middleware/authMiddleware");
+} from '../controllers/transcriptController.mjs';
+import { protect } from '../middleware/authMiddleware.mjs';
 
 const router = express.Router();
-
 // All routes are protected
-// router.use(protect);
+router.use(protect);
 
 // POST /api/transcript/fetch - Fetch transcript from YouTube
 router.post("/fetch", getTranscript);
@@ -17,4 +17,4 @@ router.post("/fetch", getTranscript);
 // GET /api/transcript/:videoId - Get video by ID
 router.get("/:videoId", getVideoById);
 
-module.exports = router;
+export default router;

@@ -1,6 +1,5 @@
 // src/models/noteModel.js
-const mongoose = require('mongoose');
-
+import mongoose from 'mongoose';
 const highlightSchema = new mongoose.Schema({
     text: String,
     color: {
@@ -75,4 +74,4 @@ noteSchema.index({ user: 1, createdAt: -1 });
 noteSchema.index({ user: 1, folder: 1 });
 noteSchema.index({ user: 1, tags: 1 });
 
-module.exports = mongoose.model('Note', noteSchema);
+export default mongoose.model('Note', noteSchema);

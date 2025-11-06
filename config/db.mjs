@@ -1,9 +1,11 @@
-// src/config/db.js
-const mongoose = require('mongoose');
-require('dotenv').config();
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { EventEmitter } from "events";
+
+dotenv.config();
 
 // Optional: increase Node's default for listeners to avoid warnings during heavy reconnect churn
-require('events').EventEmitter.defaultMaxListeners = 20;
+EventEmitter.defaultMaxListeners = 20;
 mongoose.connection.setMaxListeners(20);
 
 // A flag to ensure we attach listeners only once
@@ -13,16 +15,19 @@ function attachConnectionListeners() {
   if (listenersAttached) return;
   listenersAttached = true;
 
-  mongoose.connection.once('connected', () => {
-    console.log('✅ MongoDB Connected:', mongoose.connection.host);
+  mongoose.connection.once("connected", () => {
+    console.log("✅ MongoDB Connected:", mongoose.connection.host);
   });
 
-  mongoose.connection.on('error', (err) => {
-    console.error('❌ MongoDB connection error:', err && err.message ? err.message : err);
+  mongoose.connection.on("error", (err) => {
+    console.error(
+      "❌ MongoDB connection error:",
+      err && err.message ? err.message : err
+    );
   });
 
-  mongoose.connection.on('disconnected', () => {
-    console.warn('⚠️ MongoDB disconnected — will retry connecting in 5s');
+  mongoose.connection.on("disconnected", () => {
+    console.warn("⚠️ MongoDB disconnected — will retry connecting in 5s");
     // don't call connectDB() here directly if you're already attempting/retrying;
     // connectDB() will also attempt reconnects on failures. But this keeps it simple:
     setTimeout(() => {
@@ -45,7 +50,7 @@ async function connectDB() {
 
   const uri = process.env.MONGO_URI;
   if (!uri) {
-    throw new Error('MONGO_URI not set in environment');
+    throw new Error("MONGO_URI not set in environment");
   }
 
   try {
@@ -54,11 +59,11 @@ async function connectDB() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 10000
+      connectTimeoutMS: 10000,
     });
     // the 'connected' event logs the success
   } catch (err) {
-    console.error('❌ Error connecting to MongoDB:', err.message);
+    console.error("❌ Error connecting to MongoDB:", err.message);
     // retry after a delay (without exiting the process)
     setTimeout(() => {
       connectDB().catch(() => {});
@@ -66,4 +71,4 @@ async function connectDB() {
   }
 }
 
-module.exports = connectDB;
+export default connectDB;

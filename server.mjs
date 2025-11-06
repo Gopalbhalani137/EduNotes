@@ -1,8 +1,8 @@
 // server.js
-require('dotenv').config();
-const app = require('./app');
-const connectDB = require('./config/db');
-
+import dotenv from 'dotenv';
+dotenv.config();
+import app from './app.mjs';
+import connectDB from './config/db.mjs';
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB

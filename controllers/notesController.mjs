@@ -1,15 +1,14 @@
-// src/controllers/notesController.js
-const Note = require("../models/noteModel");
-const Video = require("../models/videoModel");
-const User = require("../models/userModel");
-const aiService = require("../services/aiService");
+import Note from "../models/noteModel.mjs";
+import Video from "../models/videoModel.mjs";
+import User from "../models/userModel.mjs";
+import aiService from "../services/aiService.mjs";
 
 /**
  * @desc    Generate notes from transcript using AI
  * @route   POST /api/notes/generate
  * @access  Private
  */
-const generateNotes = async (req, res, next) => {
+export const generateNotes = async (req, res, next) => {
   try {
     const { transcript, title, videoId } = req.body;
 
@@ -41,7 +40,7 @@ const generateNotes = async (req, res, next) => {
  * @route   POST /api/notes/save
  * @access  Private
  */
-const saveNote = async (req, res, next) => {
+export const saveNote = async (req, res, next) => {
   try {
     const { videoId, title, content, structuredNotes, tags, folder } = req.body;
 
@@ -97,7 +96,7 @@ const saveNote = async (req, res, next) => {
  * @route   GET /api/notes
  * @access  Private
  */
-const getUserNotes = async (req, res, next) => {
+export const getUserNotes = async (req, res, next) => {
   try {
     const { folder, tags, search } = req.query;
 
@@ -138,7 +137,7 @@ const getUserNotes = async (req, res, next) => {
  * @route   GET /api/notes/:id
  * @access  Private
  */
-const getNoteById = async (req, res, next) => {
+export const getNoteById = async (req, res, next) => {
   try {
     const note = await Note.findById(req.params.id).populate(
       "video",
@@ -174,7 +173,7 @@ const getNoteById = async (req, res, next) => {
  * @route   PATCH /api/notes/:id
  * @access  Private
  */
-const updateNote = async (req, res, next) => {
+export const updateNote = async (req, res, next) => {
   try {
     let note = await Note.findById(req.params.id);
 
@@ -214,7 +213,7 @@ const updateNote = async (req, res, next) => {
  * @route   DELETE /api/notes/:id
  * @access  Private
  */
-const deleteNote = async (req, res, next) => {
+export const deleteNote = async (req, res, next) => {
   try {
     const note = await Note.findById(req.params.id);
 
@@ -254,7 +253,7 @@ const deleteNote = async (req, res, next) => {
  * @route   POST /api/notes/:id/highlight
  * @access  Private
  */
-const addHighlight = async (req, res, next) => {
+export const addHighlight = async (req, res, next) => {
   try {
     const { text, color, position } = req.body;
 
@@ -285,14 +284,4 @@ const addHighlight = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-module.exports = {
-  generateNotes,
-  saveNote,
-  getUserNotes,
-  getNoteById,
-  updateNote,
-  deleteNote,
-  addHighlight,
 };

@@ -1,13 +1,13 @@
 // src/controllers/authController.js
-const User = require("../models/userModel");
-const { generateToken } = require("../services/jwt");
+import User from "../models/userModel.mjs";
+import { generateToken } from "../services/jwt.mjs";
 
 /**
  * @desc    Register new user
  * @route   POST /api/auth/register
  * @access  Public
  */
-const register = async (req, res, next) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -61,7 +61,7 @@ const register = async (req, res, next) => {
  * @route   POST /api/auth/login
  * @access  Public
  */
-const login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -122,7 +122,7 @@ const login = async (req, res, next) => {
  * @route   GET /api/auth/me
  * @access  Private
  */
-const getMe = async (req, res, next) => {
+export const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id).populate("savedNotes");
 
@@ -142,10 +142,4 @@ const getMe = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-module.exports = {
-  register,
-  login,
-  getMe,
 };
